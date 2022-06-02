@@ -3,7 +3,7 @@ project_name:
 
 project_slug:
   type: str
-  default: "{{project_slug.lower().replace(' ', '_').replace('-', '_')}}"
+  default: "{{project_name.lower().replace(' ', '_').replace('-', '_')}}"
 
 description:
   type: str
@@ -29,6 +29,7 @@ github_username:
 
 github_url:
   type: str
+  default: "https://github.com/{{github_username}}/{{project_slug}}"
 
 author_name:
   type: str
@@ -46,5 +47,5 @@ create_github_repo:
 
 _subdirectory: project
 _tasks:
-  - "{% if initialise_git_repo %}git init --initial-branch=main && git add -A && git commit -m 'Initial Commit (Automated at Project Creation)'{% else %}echo 'skipping repo initialisation'{% endif %}"
+  - "{% if create_local_repo %}git init --initial-branch=main && git add -A && git commit -m 'Initial Commit (Automated at Project Creation)'{% else %}echo 'skipping repo initialisation'{% endif %}"
   - "{% if create_github_repo %}gh repo create {{project_slug}} --public --description {{description}} --remote origin --source .{% else %}echo 'skipping github repo creation'{% endif %}"
