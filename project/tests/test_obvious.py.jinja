@@ -1,0 +1,15 @@
+from __future__ import annotations
+
+from {{project_slug}}.{{project_slug}} import hello
+
+
+def test_silly_placeholder():
+    """
+    Test for silly placeholder in
+    {{project_slug}}.py
+    """
+
+    want = "Hello {{project_slug}}"
+    got = hello()
+
+    assert got == want

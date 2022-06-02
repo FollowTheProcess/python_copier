@@ -1,0 +1,50 @@
+project_name:
+  type: str
+
+project_slug:
+  type: str
+  default: "{{project_slug.lower().replace(' ', '_').replace('-', '_')}}"
+
+description:
+  type: str
+
+build_system:
+  type: str
+  choices:
+    - setuptools
+    - flit
+    - hatch
+
+license:
+  type: str
+  choices:
+    - MIT License
+    - BSD License
+    - ISC License
+    - Apache Software License 2.0
+    - GNU General Public License v3
+
+github_username:
+  type: str
+
+github_url:
+  type: str
+
+author_name:
+  type: str
+
+author_email:
+  type: str
+
+create_local_repo:
+  type: bool
+  default: true
+
+create_github_repo:
+  type: bool
+  default: true
+
+_subdirectory: project
+_tasks:
+  - "{% if initialise_git_repo %}git init --initial-branch=main && git add -A && git commit -m 'Initial Commit (Automated at Project Creation)'{% else %}echo 'skipping repo initialisation'{% endif %}"
+  - "{% if create_github_repo %}gh repo create {{project_slug}} --public --description {{description}} --remote origin --source .{% else %}echo 'skipping github repo creation'{% endif %}"

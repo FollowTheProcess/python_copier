@@ -1,0 +1,156 @@
+name: CI
+
+on: [push, pull_request]
+
+concurrency:
+  group: {% raw %}${{ github.ref }}{% endraw %}
+  cancel-in-progress: true
+
+jobs:
+
+  test:
+
+    name: Test
+    runs-on: {% raw %}${{ matrix.os }}{% endraw %}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.8", "3.9", "3.10"]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python {% raw %}${{ matrix.python-version }}{% endraw %}
+        uses: actions/setup-python@v3
+        with:
+          python-version: {% raw %}${{ matrix.python-version }}{% endraw %}
+
+      - name: Install Dependencies
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel
+          python3 -m pip install nox
+
+      - name: Run Tests and Coverage
+        run: {% raw %}nox --non-interactive --session test-${{ matrix.python-version }}{% endraw %}
+
+  lint:
+
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+
+      - name: Install Dependencies
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel
+          python3 -m pip install nox
+
+      - name: Lint
+        run: nox --non-interactive --session lint
+
+  docs:
+
+    name: Docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+
+      - name: Install Dependencies
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel
+          python3 -m pip install nox
+
+      - name: Build Docs
+        run: nox --non-interactive --session docs
+
+  publish-docs:
+
+    name: Publish Docs
+    runs-on: ubuntu-latest
+
+    needs: docs
+
+    # Only publish docs automatically on new release
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+
+      - name: Install Dependencies
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel
+          python3 -m pip install nox
+
+      - name: Deploy Docs to GitHub Pages
+        env:
+          # Use the built in CI GITHUB_TOKEN
+          GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+        run: nox --non-interactive --session deploy_docs
+
+  release:
+
+    name: Release
+    runs-on: ubuntu-latest
+
+    needs: [test, lint, docs, publish-docs]
+
+    # Only release on new tag
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+
+      - name: Install Dependencies
+        # Uses pypa build https://pypa-build.readthedocs.io/en/latest/
+        # For full PEP517/518 compliance
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel
+          python3 -m pip install nox
+
+      - name: Build sdist and wheel
+        run: nox --non-interactive --session build
+
+      - name: Publish Distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@v1
+        with:
+          user: __token__
+          password: {% raw %}${{ secrets.PYPI_API_TOKEN }}{% endraw %}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+          GITHUB_REPOSITORY: {% raw %}${{ github.repository }}{% endraw %}
+        with:
+          draft: false
+          prerelease: false
+          files: |
+            dist/*
