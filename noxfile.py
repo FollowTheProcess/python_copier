@@ -36,7 +36,7 @@ PYTHON = os.fsdecode(VENV_DIR / "bin" / "python")
 # Python to use for non-test sessions
 DEFAULT_PYTHON: str = "3.10"
 
-# All supported python versions for cookie_pypackage
+# All supported python versions for copier_pypackage
 PYTHON_VERSIONS: List[str] = [
     "3.8",
     "3.9",
@@ -55,7 +55,7 @@ SEEDS: List[str] = [
 
 # "dev" should only be run if no virtual environment found and we're not on CI
 # i.e. someone is using nox to set up their local dev environment to
-# work on cookie_pypackage
+# work on copier_pypackage
 if not VENV_DIR.exists() and not ON_CI:
     nox.options.sessions = ["dev"]
 else:

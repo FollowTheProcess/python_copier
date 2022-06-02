@@ -41,11 +41,11 @@ body:
         examples:
           - **OS**: Ubuntu 20.04
           - **Python**: 3.9.7
-          - **cookie_pypackage**: 0.6.0
+          - **copier_pypackage**: 0.6.0
       value: |
         - OS:
         - Python:
-        - cookie_pypackage:
+        - copier_pypackage:
       render: markdown
     validations:
       required: false

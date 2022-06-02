@@ -1,8 +1,8 @@
-# Cookie Pypackage
+# Copier Pypackage
 
-![License](https://img.shields.io/github/license/FollowTheProcess/cookie_pypackage.svg)
-[![GitHub](https://img.shields.io/github/v/release/FollowTheProcess/cookie_pypackage?logo=github&sort=semver)](https://github.com/FollowTheProcess/cookie_pypackage)
-[![CI](https://github.com/FollowTheProcess/cookie_pypackage/workflows/CI/badge.svg)](https://github.com/FollowTheProcess/cookie_pypackage/actions?query=workflow%3ACI)
+![License](https://img.shields.io/github/license/FollowTheProcess/copier_pypackage.svg)
+[![GitHub](https://img.shields.io/github/v/release/FollowTheProcess/copier_pypackage?logo=github&sort=semver)](https://github.com/FollowTheProcess/copier_pypackage)
+[![CI](https://github.com/FollowTheProcess/copier_pypackage/workflows/CI/badge.svg)](https://github.com/FollowTheProcess/copier_pypackage/actions?query=workflow%3ACI)
 
 A python package template letting you bootstrap development at the bleeding edge of modern python!
 
@@ -104,7 +104,7 @@ pipx install copier
 * Call copier with this template and answer all the questions
 
 ``` shell
-copier gh:FollowTheProcess/cookie_pypackage /path/to/put/your/new/project
+copier gh:FollowTheProcess/copier_pypackage /path/to/put/your/new/project
 ```
 
 * Create a virtual environment, a git repo (if not using the gh cli) and start developing
