@@ -1,7 +1,7 @@
-{% if license == 'MIT License' -%}
+{% if license == 'MIT License' %}
 MIT License
 
-Copyright (c) 2022, {{ author_name }}
+Copyright (c) {{ '%Y' | strftime }}, {{ author_name }}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@ SOFTWARE.
 
 BSD License
 
-Copyright (c) 2022, {{ author_name }}
+Copyright (c) {{ '%Y' | strftime }}, {{ author_name }}
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -54,7 +54,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 {% elif license == 'ISC License' -%}
 ISC License
 
-Copyright (c) 2022, {{ author_name }}
+Copyright (c) {{ '%Y' | strftime }}, {{ author_name }}
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
 
@@ -267,7 +267,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
                        Version 3, 29 June 2007
 
   {{project_name}}, {{description}}
-  Copyright (c) 2022, {{ author_name }}
+  Copyright (c) {{ '%Y' | strftime }}, {{ author_name }}
 
  Copyright (C) 2007 Free Software Foundation, Inc. [http://fsf.org/]
  Everyone is permitted to copy and distribute verbatim copies
