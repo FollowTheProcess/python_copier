@@ -1,14 +1,18 @@
 project_name:
+  help: Name of your project
   type: str
 
 project_slug:
+  help: Sanitised name
   type: str
   default: "{{project_name.lower().replace(' ', '_').replace('-', '_')}}"
 
 description:
+  help: Short description of your project
   type: str
 
 build_system:
+  help: Build backend to use
   type: str
   choices:
     - setuptools
@@ -16,6 +20,7 @@ build_system:
     - hatch
 
 license:
+  help: Which open source license to use
   type: str
   choices:
     - MIT License
@@ -25,23 +30,29 @@ license:
     - GNU General Public License v3
 
 github_username:
+  help: Your GitHub username
   type: str
 
 github_url:
+  help: The GitHub URL of the project
   type: str
   default: "https://github.com/{{github_username}}/{{project_slug}}"
 
 author_name:
+  help: Your name
   type: str
 
 author_email:
+  help: Your email address
   type: str
 
 create_local_repo:
+  help: Whether to initialise a local git repo
   type: bool
   default: true
 
 create_github_repo:
+  help: Whether to create a GitHub repo
   type: bool
   default: true
 
