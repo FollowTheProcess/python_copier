@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "setuptools.build_meta"
 requires = [
-  "setuptools>=61",
+  "setuptools>=64",
 ]
 
 [project]
@@ -68,7 +68,7 @@ omit = [ "**/*/__init__.py" ]
 branch = true
 
 [tool.mypy]
-files = [ "src/**/*.py", "noxfile.py" ]
+files = [ "**/*.py ]
 ignore_missing_imports = true
 strict = true
 pretty = true
