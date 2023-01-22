@@ -7,7 +7,7 @@ requires = [
 
 [project]
 name = "copier_pypackage"
-version = "0.1.11"
+version = "0.2.0"
 description = "A modern python package template"
 readme = "README.md"
 license = { text = "MIT License" }
