@@ -2,6 +2,8 @@
 Nox configuration file for the project.
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import os
@@ -34,13 +36,13 @@ VENV_DIR = PROJECT_ROOT / ".venv"
 PYTHON = os.fsdecode(VENV_DIR / "bin" / "python")
 
 # Python to use for non-test sessions
-DEFAULT_PYTHON: str = "3.10"
+DEFAULT_PYTHON: str = "3.11"
 
 # All supported python versions for copier_pypackage
 PYTHON_VERSIONS: List[str] = [
-    "3.8",
     "3.9",
     "3.10",
+    "3.11",
 ]
 
 # List of seed packages to upgrade to their most

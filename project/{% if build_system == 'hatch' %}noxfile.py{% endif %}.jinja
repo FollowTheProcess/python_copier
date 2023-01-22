@@ -39,13 +39,13 @@ VENV_DIR = PROJECT_ROOT / ".venv"
 PYTHON = os.fsdecode(VENV_DIR / "bin" / "python")
 
 # Python to use for non-test sessions
-DEFAULT_PYTHON = "3.10"
+DEFAULT_PYTHON = "3.11"
 
 # All supported python versions for {{project_slug}}
 PYTHON_VERSIONS = [
-    "3.8",
     "3.9",
     "3.10",
+    "3.11",
 ]
 
 nox.options.sessions = ["test", "coverage", "lint", "docs"]
@@ -59,7 +59,7 @@ def test(session: nox.Session) -> None:
     session.install("--upgrade", "pip", "setuptools", "wheel")
     # Tests require the package to be installed
     session.install(".")
-    session.install("pytest", "pytest-cov")
+    session.install("pytest", "pytest-cov", "covdefaults")
 
     session.run("pytest", f"--cov={PROJECT_SRC}", f"{PROJECT_TESTS}")
     session.notify("coverage")
@@ -75,7 +75,7 @@ def coverage(session: nox.Session) -> None:
         COVERAGE_BADGE.touch()
 
     session.install("--upgrade", "pip", "setuptools", "wheel")
-    session.install("coverage[toml]", "coverage-badge")
+    session.install("coverage[toml]", "coverage-badge", "covdefaults")
 
     session.run("coverage", "report", "--show-missing")
     session.run("coverage-badge", "-fo", f"{COVERAGE_BADGE}")

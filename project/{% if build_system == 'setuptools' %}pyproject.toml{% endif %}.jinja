@@ -18,7 +18,7 @@ authors = [
   { name = "{{author_name}}" },
   { email = "{{author_email}}" },
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
 ]
 classifiers = [
@@ -26,15 +26,16 @@ classifiers = [
   "Natural Language :: English",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
   "Typing :: Typed",
 ]
 [project.optional-dependencies]
 dev = [
   "black>=22.10",
   "build>=0.9",
+  "covdefaults>=2.2.2",
   "coverage[toml]>=6.5",
   "coverage-badge>=1.1",
   "flake8>=6",
@@ -47,6 +48,7 @@ dev = [
   "pre-commit>=2.20",
   "pytest>=7.2",
   "pytest-cov>=4",
+  "ruff>=0.0.229",
 ]
 
 [project.urls]
@@ -64,8 +66,7 @@ package-data = { "{{project_slug}}" = [ "py.typed" ] }
 profile = "black"
 
 [tool.coverage.run]
-omit = [ "**/*/__init__.py" ]
-branch = true
+plugins = [ "covdefaults" ]
 
 [tool.mypy]
 files = [ "**/*.py" ]
@@ -85,6 +86,25 @@ filterwarnings = [ "error" ]
 log_cli_level = "info"
 testpaths = [ "tests" ]
 pythonpath = [ "src" ]
+
+[tool.ruff]
+line-length = 120
+extend-select = [
+  # https://github.com/charliermarsh/ruff#supported-rules
+  "W",   # Pycodestyle warnings
+  "UP",  # All pyupgrade rules
+  "N",   # PEP8 naming
+  "C",   # Flake8 comprehensions
+  "ERA", # Commented out code
+  "B",   # Flake8 bugbear
+  "RUF", # Unused noqa
+]
+extend-ignore = [
+  "B905", # zip() without strict=
+]
+
+[tool.ruff.mccabe]
+max-complexity = 15
 
 [tool.pycln]
 path = "/src"
