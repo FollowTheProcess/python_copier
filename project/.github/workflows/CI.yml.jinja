@@ -144,19 +144,18 @@ jobs:
       - name: Build sdist and wheel
         run: nox --non-interactive --session build
 
-      - name: Publish Distribution to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: {% raw %}${{ secrets.PYPI_API_TOKEN }}{% endraw %}
-
       - name: Create GitHub Release
+        id: create_release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
           GITHUB_REPOSITORY: {% raw %}${{ github.repository }}{% endraw %}
         with:
-          draft: false
-          prerelease: false
           files: |
             dist/*
+
+      - name: Publish Distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: {% raw %}${{ secrets.PYPI_API_TOKEN }}{% endraw %}

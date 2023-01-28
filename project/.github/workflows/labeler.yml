@@ -1,4 +1,6 @@
 name: Labeler
+permissions:
+  contents: write
 
 on:
   push:
