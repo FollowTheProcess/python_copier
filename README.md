@@ -1,4 +1,4 @@
-# Copier Pypackage
+# Python Copier
 
 ![License](https://img.shields.io/github/license/FollowTheProcess/copier_pypackage.svg)
 [![GitHub](https://img.shields.io/github/v/release/FollowTheProcess/copier_pypackage?logo=github&sort=semver)](https://github.com/FollowTheProcess/copier_pypackage)
