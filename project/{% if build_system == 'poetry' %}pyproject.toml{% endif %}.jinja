@@ -1,27 +1,29 @@
 [build-system]
-requires = [ "poetry-core>=1.0.0" ]
 build-backend = "poetry.core.masonry.api"
+requires = [ 
+  "poetry-core>=1",
+]
 
 [tool.poetry]
 name = "{{project_slug}}"
 version = "0.1.0"
 description = "{{description}}"
-authors = [ "{{author_name}} <{{author_email}}>" ]
+authors = ["{{author_name}} <{{author_email}}>"]
 license = "{{license}}"
 homepage = "{{github_url}}"
 readme = "README.md"
 repository = "{{github_url}}"
 documentation = "https://{{github_username}}.github.io/{{project_slug}}/"
 classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Natural Language :: English",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Typing :: Typed",
+  "Development Status :: 3 - Alpha",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Typing :: Typed",
 ]
 include = [ "{{project_slug}}/py.typed" ]
 packages = [{include = "{{project_slug}}", from = "src"}]
@@ -35,6 +37,7 @@ python = "^3.9"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.1"
+pytest-cov = "^4.0.0"
 bump2version = "^1.0.1"
 ruff = "^0.0.236"
 isort = "^5.11.4"
@@ -60,6 +63,7 @@ plugins = ["covdefaults"]
 
 [tool.coverage.report]
 fail_under = 95
+omit = ["noxfile.py"]
 
 [tool.mypy]
 files = [ "**/*.py" ]
@@ -73,12 +77,12 @@ enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
 
 [tool.pytest.ini_options]
 minversion = "7.0"
-addopts = [ "-ra", "--strict-markers", "--strict-config" ]
+addopts = ["-ra", "--strict-markers", "--strict-config"]
 xfail_strict = true
-filterwarnings = [ "error" ]
+filterwarnings = ["error"]
 log_cli_level = "info"
-testpaths = [ "tests" ]
-pythonpath = [ "src" ]
+testpaths = ["tests"]
+pythonpath = ["src"]
 
 [tool.ruff]
 line-length = 120

@@ -75,7 +75,7 @@ def update(session: nox.Session) -> None:
     """
     Updates the dependencies in the poetry.lock file.
     """
-    session.run("poetry", "update")
+    session.run("poetry", "update", external=True)
 
 
 @nox.session(python=PYTHON_VERSIONS)
@@ -83,9 +83,9 @@ def test(session: nox.Session) -> None:
     """
     Runs the test suite against all supported python versions.
     """
-    session.run("poetry", "install")
-    session.run("pytest")
-    session.notify("coverage")
+    session.install("pytest", "pytest-cov", "covdefaults")
+    session.install(".")
+    session.run("pytest", "--cov")
 
 
 @nox.session(python=PYTHON_VERSIONS)
@@ -97,9 +97,8 @@ def coverage(session: nox.Session) -> None:
         COVERAGE_BADGE.parent.mkdir(parents=True)
         COVERAGE_BADGE.touch()
 
-    session.install("coverage", "coverage-badge")
+    session.install("coverage-badge", "covdefaults")
 
-    session.run("coverage", "report")
     session.run("coverage-badge", "-fo", f"{COVERAGE_BADGE}")
 
 
