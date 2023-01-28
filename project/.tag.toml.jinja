@@ -1,9 +1,9 @@
 [[tag.files]]
 path = "src/{{project_slug}}/__init__.py"
-search = '__version__ = "{{.Current}}"'
-replace = '__version__ = "{{.Next}}"'
+search = {% raw %}'__version__ = "{{.Current}}"'{% endraw %}
+replace = {% raw %}'__version__ = "{{.Next}}"'{% endraw %}
 
 [[tag.files]]
 path = "pyproject.toml"
-search = 'version = "{{.Current}}"'
-replace = 'version = "{{.Next}}"'
+search = {% raw %}'version = "{{.Current}}"'{% endraw %}
+replace = {% raw %}'version = "{{.Next}}"'{% endraw %}
