@@ -13,8 +13,8 @@ A python package template letting you bootstrap development at the bleeding edge
 The project template comes with a ready to go GitHub Actions configuration file which automates all your code quality checks:
 
 * Testing with [pytest]
-* Linting with [pre-commit]
-* Formatting with [black]
+* Linting with [pre-commit] and [ruff]
+* Formatting with [black] and [isort]
 
 ### [Nox]
 
@@ -77,9 +77,7 @@ This template supports PEP 621, which allows for the placement of project metada
 
 ### Build System Agnostic
 
-Because this template supports [PEP 621], it now means we can be completely build system agnostic! As a result you get to choose which one you'd like at project creation time. Currently the template supports [setuptools], [flit], and [hatch].
-
-Note: Because this decision involves conditionally rendering certain parts of `pyproject.toml` and `noxfile.py`, it may do some weird formatting stuff. We try our best to resolve this by running [black], [isort] and [pyproject-fmt] during our post-generation hook **Only if they are already installed and on $PATH**. If you don't have these tools installed or available globally (e.g. through [pipx]), the template rendering **will not** break, you just might be left with some slightly weird formatting to clean up (too much whitespace in places etc.)
+Because this template supports [PEP 621], it now means we can be completely build system agnostic! As a result you get to choose which one you'd like at project creation time. Currently the template supports [setuptools], [flit], [hatch], and [poetry]
 
 ### GitHub Issue Labelling
 
@@ -121,19 +119,15 @@ If you're running nox for the first time, it will recognise there's no virtual e
 
 * That should be it! from now on everything will be handled automatically. All you need to do is write code, tests and docs! Your code will be style checked, your tests will be run on every push/pull request.
 
-[tox]: https://tox.readthedocs.io/en/latest/
 [nox]: https://nox.thea.codes/en/stable/
 [pytest]: https://docs.pytest.org/en/stable/
 [GitHub actions]: https://docs.github.com/en/free-pro-team@latest/actions
-[Sphinx]: https://www.sphinx-doc.org/en/master/
 [MkDocs]: https://www.mkdocs.org
 [Bump2Version]: https://pypi.org/project/bump2version/
 [GitHub CLI]: https://cli.github.com
 [PyPI]: https://pypi.org
-[flake8]: https://flake8.pycqa.org/en/latest/
 [isort]: https://pycqa.github.io/isort/
 [black]: https://black.readthedocs.io/en/stable/
-[mypy]: https://mypy.readthedocs.io/en/stable/
 [FastAPI]: https://fastapi.tiangolo.com
 [Typer]: https://typer.tiangolo.com
 [GitHub Pages]: https://pages.github.com
@@ -143,8 +137,6 @@ If you're running nox for the first time, it will recognise there's no virtual e
 [flit]: https://flit.pypa.io/en/latest/
 [hatch]: https://hatch.pypa.io/latest/
 [PEP 621]: https://peps.python.org/pep-0621/
-[PEP 517]: https://peps.python.org/pep-0517/
-[PEP 518]: https://peps.python.org/pep-0518/
-[pyproject-fmt]: https://github.com/tox-dev/pyproject-fmt
-[pipx]: https://pypa.github.io/pipx/
 [pre-commit]: https://pre-commit.com
+[ruff]: https://github.com/charliermarsh/ruff
+[poetry]: https://python-poetry.org
