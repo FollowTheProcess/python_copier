@@ -47,19 +47,13 @@ This also happens when you push a new tag to main as part of a release (see belo
 
 ### Easy Versioning
 
-Pre-configured version bumping with [Bump2Version], all you need to do when you're ready for a new version is:
+Pre-configured version bumping with [tag], all you need to do when you're ready for a new version is:
 
 ``` shell
-bump2version patch # Possible: patch, minor, major
-git push
-git push --tags
+tag patch --push # Possible: patch, minor, major
 ```
 
 There's also a nox session for this:
-
-``` shell
-nox -s release -- patch # Possible: patch, minor, major
-```
 
 And your new version will be pushed up in a new commit and tag.
 
@@ -77,7 +71,7 @@ This template supports PEP 621, which allows for the placement of project metada
 
 ### Build System Agnostic
 
-Because this template supports [PEP 621], it now means we can be completely build system agnostic! As a result you get to choose which one you'd like at project creation time. Currently the template supports [setuptools], [flit], [hatch], and [poetry]
+Because this template supports [PEP 621], it now means we can be completely build system agnostic! As a result you get to choose which one you'd like at project creation time. Currently the template supports [setuptools], [flit], [hatch], and [poetry] (not currently PEP 621)
 
 ### GitHub Issue Labelling
 
@@ -107,14 +101,6 @@ copier gh:FollowTheProcess/copier_pypackage /path/to/put/your/new/project
 
 * Create a virtual environment, a git repo (if not using the gh cli) and start developing
 
-Hot tip: just let [nox] do it!
-
-``` shell
-nox
-```
-
-If you're running nox for the first time, it will recognise there's no virtual environment yet and go through all the above steps for you! Any future times you run it, it will do all sorts of testing and linting and other goodness!
-
 * Make a first commit and set up the github repo (if you didn't use the gh cli)
 
 * That should be it! from now on everything will be handled automatically. All you need to do is write code, tests and docs! Your code will be style checked, your tests will be run on every push/pull request.
@@ -123,7 +109,6 @@ If you're running nox for the first time, it will recognise there's no virtual e
 [pytest]: https://docs.pytest.org/en/stable/
 [GitHub actions]: https://docs.github.com/en/free-pro-team@latest/actions
 [MkDocs]: https://www.mkdocs.org
-[Bump2Version]: https://pypi.org/project/bump2version/
 [GitHub CLI]: https://cli.github.com
 [PyPI]: https://pypi.org
 [isort]: https://pycqa.github.io/isort/
@@ -140,3 +125,4 @@ If you're running nox for the first time, it will recognise there's no virtual e
 [pre-commit]: https://pre-commit.com
 [ruff]: https://github.com/charliermarsh/ruff
 [poetry]: https://python-poetry.org
+[tag]: https://github.com/FollowTheProcess/tag
