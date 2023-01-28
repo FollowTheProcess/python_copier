@@ -34,12 +34,9 @@ classifiers = [
 [project.optional-dependencies]
 dev = [
   "black>=22.10",
-  "build>=0.9",
   "covdefaults>=2.2.2",
   "coverage[toml]>=6.5",
   "coverage-badge>=1.1",
-  "flake8>=6",
-  "flake8-bugbear>=22.10.27",
   "isort>=5.10.1",
   "mkdocs>=1.4.2",
   "mkdocs-material>=8.5.03",
@@ -100,9 +97,3 @@ extend-ignore = [
 
 [tool.ruff.mccabe]
 max-complexity = 15
-
-[tool.pycln]
-path = "/src"
-expand_stars = true
-all = true
-no_gitignore = false
