@@ -18,6 +18,7 @@ build_system:
     - setuptools
     - flit
     - hatch
+    - poetry
 
 license:
   help: Which open source license to use

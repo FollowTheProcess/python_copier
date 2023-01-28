@@ -1,0 +1,106 @@
+[build-system]
+requires = [ "poetry-core>=1.0.0" ]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "{{project_slug}}"
+version = "0.1.0"
+description = "{{description}}"
+authors = [ "{{author_name}} <{{author_email}}>" ]
+license = "{{license}}"
+homepage = "{{github_url}}"
+readme = "README.md"
+repository = "{{github_url}}"
+documentation = "https://{{github_username}}.github.io/{{project_slug}}/"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Typing :: Typed",
+]
+include = [ "{{project_slug}}/py.typed" ]
+packages = [{include = "{{project_slug}}", from = "src"}]
+
+
+[tool.poetry.urls]
+Documentation = "https://{{github_username}}.github.io/{{project_slug}}/"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.1"
+bump2version = "^1.0.1"
+ruff = "^0.0.236"
+isort = "^5.11.4"
+nox = "^2022.11.21"
+black = "^22.12.0"
+coverage-badge = "^1.1.0"
+coverage = "^7.1.0"
+covdefaults = "^2.2.2"
+toml = "^0.10.2"
+mypy = "^0.991"
+mkdocs = "^1.4.2"
+mkdocs-material = "^9.0.6"
+mkdocstrings = "^0.20.0"
+mkdocstrings-python = "^0.8.3"
+pre-commit = "^3.0.1"
+
+
+[tool.isort]
+profile = "black"
+
+[tool.coverage.run]
+plugins = ["covdefaults"]
+
+[tool.coverage.report]
+fail_under = 95
+
+[tool.mypy]
+files = [ "**/*.py" ]
+ignore_missing_imports = true
+strict = true
+pretty = true
+disallow_untyped_decorators = false
+show_error_codes = true
+warn_unreachable = true
+enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [ "-ra", "--strict-markers", "--strict-config" ]
+xfail_strict = true
+filterwarnings = [ "error" ]
+log_cli_level = "info"
+testpaths = [ "tests" ]
+pythonpath = [ "src" ]
+
+[tool.ruff]
+line-length = 120
+extend-select = [
+  # https://github.com/charliermarsh/ruff#supported-rules
+  "W",   # Pycodestyle warnings
+  "UP",  # All pyupgrade rules
+  "N",   # PEP8 naming
+  "C",   # Flake8 comprehensions
+  "ERA", # Commented out code
+  "B",   # Flake8 bugbear
+  "RUF", # Unused noqa
+]
+extend-ignore = [
+  "B905", # zip() without strict=
+]
+
+[tool.ruff.mccabe]
+max-complexity = 15
+
+[tool.pycln]
+path = "/src"
+expand_stars = true
+all = true
+no_gitignore = false
