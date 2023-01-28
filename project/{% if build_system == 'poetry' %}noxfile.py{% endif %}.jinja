@@ -50,7 +50,7 @@ PYTHON_VERSIONS: list[str] = [
 if not VENV_DIR.exists() and not ON_CI:
     nox.options.sessions = ["dev"]
 else:
-    nox.options.sessions = ["test", "doctest", "coverage", "lint", "docs"]
+    nox.options.sessions = ["test", "coverage", "lint", "docs"]
 
 
 @nox.session(python=False)
