@@ -60,4 +60,4 @@ create_github_repo:
 _subdirectory: project
 _tasks:
   - "{% if create_local_repo %}git init --initial-branch=main && git add -A && git commit -m 'Initial Commit (Automated at Project Creation)'{% else %}echo 'skipping repo initialisation'{% endif %}"
-  - "{% if create_github_repo %}gh repo create {{project_slug}} --public --description {{description}} --remote origin --source .{% else %}echo 'skipping github repo creation'{% endif %}"
+  - "{% if create_github_repo %}gh repo create {{project_slug}} --public --description '{{description}}' --remote origin --source .{% else %}echo 'skipping github repo creation'{% endif %}"
