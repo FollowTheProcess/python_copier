@@ -1,6 +1,4 @@
 name: Labeler
-permissions:
-  contents: write
 
 on:
   push:
@@ -11,6 +9,8 @@ jobs:
   labeler:
     name: Labeler
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3

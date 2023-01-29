@@ -12,17 +12,24 @@ concurrency:
   group: {% raw %}${{ github.ref }}{% endraw %}
   cancel-in-progress: true
 
+env:
+  DEFAULT_PYTHON: "3.11"
+
 jobs:
-
   test:
-
     name: Test
     runs-on: {% raw %}${{ matrix.os }}{% endraw %}
 
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        python-version: ["3.9", "3.10", "3.11"]
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        python-version:
+          - "3.9"
+          - "3.10"
+          - "3.11"
 
     steps:
       - name: Checkout Code
@@ -42,7 +49,6 @@ jobs:
         run: {% raw %}nox --non-interactive --session test-${{ matrix.python-version }}{% endraw %}
 
   lint:
-
     name: Lint
     runs-on: ubuntu-latest
 
@@ -50,10 +56,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.11
+      - name: Set up Python {% raw %}${{ env.DEFAULT_PYTHON }}{% endraw %}
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: {% raw %}${{ env.DEFAULT_PYTHON }}{% endraw %}
 
       - name: Install Dependencies
         run: |
@@ -64,7 +70,6 @@ jobs:
         run: nox --non-interactive --session lint
 
   docs:
-
     name: Docs
     runs-on: ubuntu-latest
 
@@ -72,10 +77,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.11
+      - name: Set up Python {% raw %}${{ env.DEFAULT_PYTHON }}{% endraw %}
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: {% raw %}${{ env.DEFAULT_PYTHON }}{% endraw %}
 
       - name: Install Dependencies
         run: |
@@ -86,11 +91,15 @@ jobs:
         run: nox --non-interactive --session docs
 
   publish-docs:
-
     name: Publish Docs
     runs-on: ubuntu-latest
+    permissions:
+      # Required for publishing docs
+      pages: write
+      contents: write
 
-    needs: docs
+    needs:
+      - docs
 
     # Only publish docs automatically on new release
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
@@ -99,10 +108,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.11
+      - name: Set up Python {% raw %}${{ env.DEFAULT_PYTHON }}{% endraw %}
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: {% raw %}${{ env.DEFAULT_PYTHON }}{% endraw %}
 
       - name: Install Dependencies
         run: |
@@ -116,11 +125,16 @@ jobs:
         run: nox --non-interactive --session deploy_docs
 
   release:
-
     name: Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
-    needs: [test, lint, docs, publish-docs]
+    needs:
+      - test
+      - lint
+      - docs
+      - publish-docs
 
     # Only release on new tag
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
@@ -129,14 +143,12 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.11
+      - name: Set up Python {% raw %}${{ env.DEFAULT_PYTHON }}{% endraw %}
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: {% raw %}${{ env.DEFAULT_PYTHON }}{% endraw %}
 
       - name: Install Dependencies
-        # Uses pypa build https://pypa-build.readthedocs.io/en/latest/
-        # For full PEP517/518 compliance
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
           python3 -m pip install nox
