@@ -118,8 +118,9 @@ def lint(session: nox.Session) -> None:
     """
     Run pre-commit linting.
     """
-    session.install("pre-commit")
+    session.install("pre-commit", "mypy")
     session.run("pre-commit", "run", "--all-files")
+    session.run("mypy")
 
 
 @nox.session
