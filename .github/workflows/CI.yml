@@ -1,11 +1,23 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     # Only release on new tag
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
