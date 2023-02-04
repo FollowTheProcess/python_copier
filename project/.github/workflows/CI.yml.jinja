@@ -166,6 +166,13 @@ jobs:
           files: |
             dist/*
 
+      - name: Publish Draft Release
+        uses: eregon/publish-release@v1
+        env:
+          GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+        with:
+          release_id: {% raw %}${{ steps.create_release.outputs.id }}{% endraw %}
+
       - name: Publish Distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
