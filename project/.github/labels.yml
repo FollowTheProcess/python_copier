@@ -65,7 +65,6 @@
 - name: style
   description: Style
   color: c120e5
-
 - name: testing
   description: Testing
   color: b1fc6f
