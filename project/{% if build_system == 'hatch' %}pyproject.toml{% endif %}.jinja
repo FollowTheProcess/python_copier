@@ -81,11 +81,14 @@ pythonpath = [ "src" ]
 
 [tool.ruff]
 line-length = 120
-extend-select = [
+select = [
   # https://github.com/charliermarsh/ruff#supported-rules
+  "E",   # Pycodestyle errors
+  "F",   # Pyflakes errors
   "W",   # Pycodestyle warnings
   "UP",  # All pyupgrade rules
   "N",   # PEP8 naming
+  "I",   # Isort
   "C90", # Complexity
   "C4",  # Flake8 comprehensions
   "ERA", # Commented out code
@@ -101,10 +104,11 @@ extend-select = [
   "PTH", # Use pathlib over os.path
   "PGH", # Pygrep hooks
 ]
-extend-ignore = [
+ignore = [
   "B905",   # zip() without strict=
   "ANN101", # Missing type annotation for `self` in method
 ]
 
 [tool.ruff.mccabe]
 max-complexity = 15
+
