@@ -156,22 +156,13 @@ jobs:
       - name: Build sdist and wheel
         run: nox --non-interactive --session build
 
-      - name: Create GitHub Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
-          GITHUB_REPOSITORY: {% raw %}${{ github.repository }}{% endraw %}
-        with:
-          files: |
-            dist/*
-
       - name: Publish Draft Release
-        uses: eregon/publish-release@v1
         env:
-          GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
-        with:
-          release_id: {% raw %}${{ steps.create_release.outputs.id }}{% endraw %}
+          GH_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+        run: |
+          {% raw %}DRAFT_RELEASE_TAG=$(gh api repos/${{ github.repository }}/releases --jq '.[] | select(.draft==true) | .tag_name')
+          gh release edit $DRAFT_RELEASE_TAG --draft=false --latest --tag ${{ github.ref_name }} --title ${{ github.ref_name }}
+          gh release upload ${{ github.ref_name }} dist/*{% endraw %}
 
       - name: Publish Distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
