@@ -66,6 +66,14 @@ jobs:
           python3 -m pip install --upgrade pip setuptools wheel
           python3 -m pip install nox
 
+      - name: Cache Pre-commit Environment
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pre-commit
+          key: ${{ runner.os }}-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pre-commit-
+
       - name: Lint
         run: nox --non-interactive --session lint
 
