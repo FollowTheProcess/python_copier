@@ -95,6 +95,7 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 
 [tool.ruff]
+target-version = "py39"
 line-length = 120
 select = [
   # https://github.com/charliermarsh/ruff#supported-rules
@@ -104,6 +105,7 @@ select = [
   "UP",  # All pyupgrade rules
   "N",   # PEP8 naming
   "I",   # Isort
+  "D",   # Pydocstyle
   "C90", # Complexity
   "C4",  # Flake8 comprehensions
   "ERA", # Commented out code
@@ -112,20 +114,50 @@ select = [
   "YTT", # Flake8 2020
   "ANN", # Type annotations
   "BLE", # No blind excepts
+  "PIE", # Flake8 pie
   "PT",  # Pytest style
   "RET", # Function returns
   "SIM", # Simplify
   "ARG", # Unused arguments
   "PTH", # Use pathlib over os.path
   "PGH", # Pygrep hooks
+  "DTZ", # Datetime timezone gotchas
+  "FBT", # Flake8 boolean trap
+  "S",   # Bandit (security)
+  "A",   # Don't shadow builtins
+  "INP", # No implicit namespace packages (causes import errors)
+  "T20", # No print statements
+  "RSE", # When raising an exception chain, use from
+  "SLF", # Flake8-self, private member access
+  "TCH", # Stuff for typing is behind an if TYPE_CHECKING block
 ]
 ignore = [
-  "B905",   # zip() without strict=
-  "ANN101", # Missing type annotation for `self` in method
+  "D203",   # One blank line before class docstring
+  "D212",   # Multi-line docstring summary should be on the first line
+  "D105",   # Missing docstring in magic method (non init)
+  "D200",   # One line docstring should all be on one line
+  "D401",   # First line should be in imperative mood
+  "D205",   # One blank line required between summary line and description
+  "D417",   # Wants sphinx style docstrings
+  "D406",   # Section names should end with a newline
+  "D407",   # Missing dashed underline after section
+  "ANN101", # Missing type annotation for self in method
 ]
 
 [tool.ruff.mccabe]
 max-complexity = 15
 
 [tool.ruff.isort]
-required-imports = ["from __future__ import annotations"]
+required-imports = [ "from __future__ import annotations" ]
+
+[tool.ruff.per-file-ignores]
+"tests/**/*.py" = [
+  "ARG001", # Thinks pytest fixtures are unused arguments
+  "D104",   # Missing docstring in __init__.py in tests (which is fine)
+  "FBT001", # Tests are allowed positional bools (fixtures etc.)
+  "S101",   # Assert is allowed in tests (obviously)
+  "TCH",    # Tests will be run with dev dependencies so we don't care
+]
+"conftest.py" = [
+  "TCH", # Conftest is only run for tests (with dev dependencies)
+]
