@@ -70,9 +70,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pre-commit
-          key: ${{ runner.os }}-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+          key: {% raw %}${{ runner.os }}-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}{% endraw %}
           restore-keys: |
-            ${{ runner.os }}-pre-commit-
+            {% raw %}${{ runner.os }}-pre-commit-{% endraw %}
 
       - name: Lint
         run: nox --non-interactive --session lint
