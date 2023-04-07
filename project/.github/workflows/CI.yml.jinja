@@ -41,12 +41,10 @@ jobs:
           python-version: {% raw %}${{ matrix.python-version }}{% endraw %}
 
       - name: Install Dependencies
-        run: |
-          python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install nox
+        run: python3 -m pip install --upgrade pip hatch
 
       - name: Run Tests and Coverage
-        run: {% raw %}nox --non-interactive --session test-${{ matrix.python-version }}{% endraw %}
+        run: hatch run tests:run
 
   lint:
     name: Lint
@@ -62,9 +60,7 @@ jobs:
           python-version: {% raw %}${{ env.DEFAULT_PYTHON }}{% endraw %}
 
       - name: Install Dependencies
-        run: |
-          python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install nox
+        run: python3 -m pip install --upgrade pip hatch
 
       - name: Cache Pre-commit Environment
         uses: actions/cache@v3
@@ -75,7 +71,31 @@ jobs:
             {% raw %}${{ runner.os }}-pre-commit-{% endraw %}
 
       - name: Lint
-        run: nox --non-interactive --session lint
+        run: hatch run lint:run
+
+  codecov:
+    name: Codecov
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: python3 -m pip install --upgrade pip hatch
+
+      - name: Run Tests and Coverage
+        run: hatch run tests:cov
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
 
   docs:
     name: Docs
@@ -91,12 +111,10 @@ jobs:
           python-version: {% raw %}${{ env.DEFAULT_PYTHON }}{% endraw %}
 
       - name: Install Dependencies
-        run: |
-          python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install nox
+        run: python3 -m pip install --upgrade pip hatch
 
       - name: Build Docs
-        run: nox --non-interactive --session docs
+        run: hatch run docs:build
 
   publish-docs:
     name: Publish Docs
@@ -122,15 +140,13 @@ jobs:
           python-version: {% raw %}${{ env.DEFAULT_PYTHON }}{% endraw %}
 
       - name: Install Dependencies
-        run: |
-          python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install nox
+        run: python3 -m pip install --upgrade pip hatch
 
       - name: Deploy Docs to GitHub Pages
         env:
           # Use the built in CI GITHUB_TOKEN
           GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
-        run: nox --non-interactive --session deploy_docs
+        run: hatch run docs:deploy
 
   release:
     name: Release
@@ -141,6 +157,7 @@ jobs:
     needs:
       - test
       - lint
+      - codecov
       - docs
       - publish-docs
 
@@ -157,12 +174,10 @@ jobs:
           python-version: {% raw %}${{ env.DEFAULT_PYTHON }}{% endraw %}
 
       - name: Install Dependencies
-        run: |
-          python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install nox
+        run: python3 -m pip install --upgrade pip hatch
 
       - name: Build sdist and wheel
-        run: nox --non-interactive --session build
+        run: hatch build
 
       - name: Publish Draft Release
         env:

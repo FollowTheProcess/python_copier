@@ -11,24 +11,14 @@ description:
   help: Short description of your project
   type: str
 
-build_system:
-  help: Build backend to use
-  type: str
-  choices:
-    - setuptools
-    - flit
-    - hatch
-    - poetry
-
 license:
   help: Which open source license to use
   type: str
   choices:
-    - MIT License
-    - BSD License
-    - ISC License
-    - Apache Software License 2.0
-    - GNU General Public License v3
+    - MIT
+    - BSD-3-Clause
+    - Apache-2.0
+    - GPL-3.0-or-later
 
 github_username:
   help: Your GitHub username

@@ -1,7 +1,7 @@
 [build-system]
-build-backend = "flit_core.buildapi"
+build-backend = "hatchling.build"
 requires = [
-  "flit_core>=3.2",
+  "hatchling",
 ]
 
 [project]
@@ -19,8 +19,6 @@ authors = [
   { email = "{{author_email}}" },
 ]
 requires-python = ">=3.9"
-dependencies = [
-]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Natural Language :: English",
@@ -31,21 +29,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Typing :: Typed",
 ]
-[project.optional-dependencies]
-dev = [
-  "black>=22.12",
-  "covdefaults>=2.2.2",
-  "coverage[toml]>=7.1",
-  "coverage-badge>=1.1",
-  "isort>=5.11.4",
-  "mkdocs>=1.4.2",
-  "mkdocs-material>=9.0.7",
-  "mypy>=0.991",
-  "nox>=2022.11.21",
-  "pre-commit>=3.0.1",
-  "pytest>=7.2.1",
-  "pytest-cov>=4",
-  "ruff>=0.0.236",
+dependencies = [
 ]
 
 [project.urls]
@@ -53,15 +37,98 @@ documentation = "https://{{github_username}}.github.io/{{project_slug}}/"
 homepage = "{{github_url}}"
 repository = "{{github_url}}"
 
+[tool.hatch.envs.default]
+# Include dev dependencies in the default environment
+description = """
+Default environment for development, contains everything
+you need to work on the project, installed by default.
+"""
+extra-dependencies = [
+  "pytest",
+  "black",
+  "coverage[toml]",
+  "mypy",
+  "mkdocs",
+  "mkdocs-material",
+  "pre-commit",
+  "pytest-cov",
+  "covdefaults",
+  "ruff",
+]
 
-[tool.isort]
-profile = "black"
+[tool.hatch.envs.default.scripts]
+check = [
+  "pytest --cov ./src ./tests",
+  "pre-commit run --all-files",
+]
+
+[tool.hatch.envs.tests]
+template = "tests" # Don't inherit from default
+description = """
+Environment for running tests, contains only the
+test dependencies and installs the project.
+"""
+dependencies = [
+  "pytest",
+  "pytest-cov",
+  "coverage[toml]",
+  "covdefaults",
+]
+
+[tool.hatch.envs.tests.scripts]
+run = "pytest --cov ./src ./tests"
+cov = [
+  "run",
+  "coverage xml",
+]
+
+[tool.hatch.envs.lint]
+detached = true
+description = """
+Environment for running linters, contains only the linting
+dependencies and does not install the project.
+"""
+dependencies = [
+  "pre-commit",
+]
+
+[tool.hatch.envs.lint.scripts]
+run = "pre-commit run --all-files"
+
+[tool.hatch.envs.docs]
+template = "docs" # Don't inherit from default
+description = """
+Environment for building and serving docs, contains only
+the docs dependencies and does not install the project.
+"""
+dependencies = [
+  "mkdocs",
+  "mkdocs-material",
+]
+
+[tool.hatch.envs.docs.scripts]
+build = "mkdocs build --clean"
+serve = "mkdocs serve"
+deploy = "mkdocs gh-deploy --force"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [ "-ra", "--strict-markers", "--strict-config" ]
+xfail_strict = true
+filterwarnings = [
+  "error",
+  "ignore::DeprecationWarning", # DeprecationWarning: read_binary is deprecated. Use files() instead. Comes from virtualenv
+]
+log_cli_level = "info"
+pythonpath = [ "src" ]
+testpaths = [ "tests" ]
 
 [tool.coverage.run]
 plugins = [ "covdefaults" ]
 
 [tool.mypy]
 files = [ "**/*.py" ]
+python_version = "3.8"
 ignore_missing_imports = true
 strict = true
 pretty = true
@@ -70,17 +137,8 @@ show_error_codes = true
 warn_unreachable = true
 enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
 
-[tool.pytest.ini_options]
-minversion = "7.0"
-addopts = [ "-ra", "--strict-markers", "--strict-config" ]
-xfail_strict = true
-filterwarnings = [ "error" ]
-log_cli_level = "info"
-testpaths = [ "tests" ]
-pythonpath = [ "src" ]
-
 [tool.ruff]
-target-version = "py39"
+target-version = "py38"
 line-length = 120
 select = [
   # https://github.com/charliermarsh/ruff#supported-rules
@@ -106,15 +164,6 @@ select = [
   "ARG", # Unused arguments
   "PTH", # Use pathlib over os.path
   "PGH", # Pygrep hooks
-  "DTZ", # Datetime timezone gotchas
-  "FBT", # Flake8 boolean trap
-  "S",   # Bandit (security)
-  "A",   # Don't shadow builtins
-  "INP", # No implicit namespace packages (causes import errors)
-  "T20", # No print statements
-  "RSE", # When raising an exception chain, use from
-  "SLF", # Flake8-self, private member access
-  "TCH", # Stuff for typing is behind an if TYPE_CHECKING block
 ]
 ignore = [
   "D203",   # One blank line before class docstring
@@ -127,6 +176,8 @@ ignore = [
   "D406",   # Section names should end with a newline
   "D407",   # Missing dashed underline after section
   "ANN101", # Missing type annotation for self in method
+  "ANN102", # Missing type annotation for cls in classmethod
+  "PT011",  # ValueError is too vague
 ]
 
 [tool.ruff.mccabe]
@@ -137,12 +188,7 @@ required-imports = [ "from __future__ import annotations" ]
 
 [tool.ruff.per-file-ignores]
 "tests/**/*.py" = [
-  "ARG001", # Thinks pytest fixtures are unused arguments
-  "D104",   # Missing docstring in __init__.py in tests (which is fine)
-  "FBT001", # Tests are allowed positional bools (fixtures etc.)
-  "S101",   # Assert is allowed in tests (obviously)
-  "TCH",    # Tests will be run with dev dependencies so we don't care
-]
-"conftest.py" = [
-  "TCH", # Conftest is only run for tests (with dev dependencies)
+  "D100", # Missing docstring in public module
+  "D103", # Missing docstring in public function
+  "D104", # Missing docstring in public package
 ]
