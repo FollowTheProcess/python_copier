@@ -14,18 +14,14 @@ The project template comes with a ready to go GitHub Actions configuration file 
 
 * Testing with [pytest]
 * Linting with [pre-commit] and [ruff]
-* Formatting with [black] and [isort]
+* Formatting with [black]
 
-### [Nox]
+### [Hatch]
 
-Easy automation & flexible testing for python:
+Easy environment management, package management and task automation with hatch:
 
-* nox is just like tox, but with easy configuration in a python file
-* Comes preconfigured to do project maintainence tasks like build and serve docs in one command:
-
-``` shell
-nox docs -- serve
-```
+* Create a virtual environment with `hatch env create`
+* Run dev tests and lint checks with `hatch run check`
 
 ### [MkDocs]
 
@@ -67,11 +63,7 @@ Option to use the new GitHub CLI to create a GitHub repo for you during project 
 
 ### PEP 621 Ready
 
-This template supports PEP 621, which allows for the placement of project metadata in pyproject.toml, supported by [setuptools]>=61.0.0, [flit] and [hatch].
-
-### Build System Agnostic
-
-Because this template supports [PEP 621], it now means we can be completely build system agnostic! As a result you get to choose which one you'd like at project creation time. Currently the template supports [setuptools], [flit], [hatch], and [poetry] (not currently PEP 621)
+This template supports PEP 621, which allows for the placement of project metadata in pyproject.toml.
 
 ### GitHub Issue Labelling
 
@@ -105,7 +97,6 @@ copier gh:FollowTheProcess/copier_pypackage /path/to/put/your/new/project
 
 * That should be it! from now on everything will be handled automatically. All you need to do is write code, tests and docs! Your code will be style checked, your tests will be run on every push/pull request.
 
-[nox]: https://nox.thea.codes/en/stable/
 [pytest]: https://docs.pytest.org/en/stable/
 [GitHub actions]: https://docs.github.com/en/free-pro-team@latest/actions
 [MkDocs]: https://www.mkdocs.org
@@ -118,11 +109,7 @@ copier gh:FollowTheProcess/copier_pypackage /path/to/put/your/new/project
 [GitHub Pages]: https://pages.github.com
 [PyPI API Token]: https://pypi.org/help/#apitoken
 [Release Drafter]: https://github.com/release-drafter/release-drafter
-[setuptools]: https://setuptools.pypa.io/en/latest/index.html#
-[flit]: https://flit.pypa.io/en/latest/
 [hatch]: https://hatch.pypa.io/latest/
-[PEP 621]: https://peps.python.org/pep-0621/
 [pre-commit]: https://pre-commit.com
 [ruff]: https://github.com/charliermarsh/ruff
-[poetry]: https://python-poetry.org
 [tag]: https://github.com/FollowTheProcess/tag
