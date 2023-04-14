@@ -4,14 +4,19 @@ on:
   push:
     branches:
       - main
+    paths:
+      - ".github/labels.yml"
+      - ".github/labeler.yml"
 
 jobs:
   labeler:
     name: Labeler
     runs-on: ubuntu-latest
+
     permissions:
       contents: write
       issues: write
+
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
@@ -19,4 +24,4 @@ jobs:
       - name: Run Labeler
         uses: crazy-max/ghaction-github-labeler@v4
         with:
-          skip-delete: true
+          skip-delete: false
