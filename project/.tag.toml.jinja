@@ -1,0 +1,14 @@
+current = "0.1.0"
+
+[git]
+default-branch = "main"
+message-template = {% raw %}"Bump version {{.Current}} -> {{.Next}}"{% endraw %}
+tag-template = {% raw %}"v{{.Next}}"{% endraw %}
+
+[[file]]
+path = "pyproject.toml"
+search = {% raw %}'version = "{{.Current}}"'{% endraw %}
+
+[[file]]
+path = {% raw %}"src/{{project_slug}}/__init__.py"{% endraw %}
+search = {% raw %}'version = "{{.Current}}"'{% endraw %}

@@ -22,7 +22,6 @@ requires-python = ">=3.9"
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Natural Language :: English",
-  "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
@@ -139,7 +138,7 @@ enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
 target-version = "py39"
 line-length = 120
 select = [
-  # https://github.com/charliermarsh/ruff#supported-rules
+  # https://beta.ruff.rs/docs/rules/
   "E",   # Pycodestyle errors
   "F",   # Pyflakes errors
   "W",   # Pycodestyle warnings
@@ -181,6 +180,10 @@ ignore = [
   "D406",   # Section names should end with a newline
   "D407",   # Missing dashed underline after section
   "ANN101", # Missing type annotation for self in method
+  "ANN102", # Missing type annotation for cls in classmethod
+]
+unfixable = [
+  "F841", # Stop ruff from removing unused variables before you've had chance to use them
 ]
 
 [tool.ruff.mccabe]

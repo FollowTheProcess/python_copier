@@ -168,6 +168,17 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Fetch Existing Tags
+        run: git fetch --force --tags
+
+      - name: Parse Release Version
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Set up Python {% raw %}${{ env.DEFAULT_PYTHON }}{% endraw %}
         uses: actions/setup-python@v4
@@ -181,12 +192,17 @@ jobs:
         run: hatch build
 
       - name: Publish Draft Release
+        uses: release-drafter/release-drafter@v5
+        with:
+          version: {% raw %}${{ steps.version.outputs.version }}{% endraw %}
+          publish: true
+        env:
+          GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+
+      - name: Upload Dist
         env:
           GH_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
-        run: |
-          {% raw %}DRAFT_RELEASE_TAG=$(gh api repos/${{ github.repository }}/releases --jq '.[] | select(.draft==true) | .tag_name')
-          gh release edit $DRAFT_RELEASE_TAG --draft=false --latest --tag ${{ github.ref_name }} --title ${{ github.ref_name }} --repo ${{ github.repository }}
-          gh release upload ${{ github.ref_name }} dist/* --repo ${{ github.repository }}{% endraw %}
+        run: {% raw %}gh release upload ${{ github.ref_name }} dist/* --repo ${{ github.repository }}{% endraw %}
 
       - name: Publish Distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

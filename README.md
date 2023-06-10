@@ -49,17 +49,11 @@ Pre-configured version bumping with [tag], all you need to do when you're ready 
 tag patch --push # Possible: patch, minor, major
 ```
 
-There's also a nox session for this:
-
 And your new version will be pushed up in a new commit and tag.
 
 You can also choose to automatically release your new version to [PyPI] if your CI passes by creating a [PyPI API Token] and saving it in a repository secret named `PYPI_API_TOKEN`
 
 * Don't worry, your package will only be uploaded to [PyPI] if all other CI actions pass (testing, linting, building docs etc.)
-
-### [GitHub CLI]
-
-Option to use the new GitHub CLI to create a GitHub repo for you during project creation. (You'll need to have this already installed)
 
 ### PEP 621 Ready
 
@@ -88,19 +82,18 @@ pipx install copier
 * Call copier with this template and answer all the questions
 
 ``` shell
-copier gh:FollowTheProcess/copier_pypackage /path/to/put/your/new/project
+copier copy gh:FollowTheProcess/copier_pypackage /path/to/put/your/new/project
 ```
 
-* Create a virtual environment, a git repo (if not using the gh cli) and start developing
+* Create a virtual environment (`hatch env create`), a git repo and start developing
 
-* Make a first commit and set up the github repo (if you didn't use the gh cli)
+* Make a first commit and set up the github repo
 
 * That should be it! from now on everything will be handled automatically. All you need to do is write code, tests and docs! Your code will be style checked, your tests will be run on every push/pull request.
 
 [pytest]: https://docs.pytest.org/en/stable/
 [GitHub actions]: https://docs.github.com/en/free-pro-team@latest/actions
 [MkDocs]: https://www.mkdocs.org
-[GitHub CLI]: https://cli.github.com
 [PyPI]: https://pypi.org
 [isort]: https://pycqa.github.io/isort/
 [black]: https://black.readthedocs.io/en/stable/
