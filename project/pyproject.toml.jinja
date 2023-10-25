@@ -26,6 +26,7 @@ classifiers = [
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Typing :: Typed",
 ]
 dependencies = [
@@ -43,7 +44,6 @@ you need to work on the project, installed by default.
 """
 extra-dependencies = [
   "pytest",
-  "black",
   "coverage[toml]",
   "mypy",
   "mkdocs",
@@ -137,8 +137,10 @@ enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
 [tool.ruff]
 target-version = "py39"
 line-length = 120
+
+[tool.ruff.lint]
 select = [
-  # https://beta.ruff.rs/docs/rules/
+  # https://docs.astral.sh/ruff/rules/
   "E",   # Pycodestyle errors
   "F",   # Pyflakes errors
   "W",   # Pycodestyle warnings
@@ -179,20 +181,18 @@ ignore = [
   "D417",   # Wants sphinx style docstrings
   "D406",   # Section names should end with a newline
   "D407",   # Missing dashed underline after section
-  "ANN101", # Missing type annotation for self in method
-  "ANN102", # Missing type annotation for cls in classmethod
 ]
 unfixable = [
   "F841", # Stop ruff from removing unused variables before you've had chance to use them
 ]
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 15
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 required-imports = [ "from __future__ import annotations" ]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [
   "ARG001", # Thinks pytest fixtures are unused arguments
   "D104",   # Missing docstring in __init__.py in tests (which is fine)
